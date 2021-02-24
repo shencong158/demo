@@ -8,6 +8,8 @@ import com.riversoft.weixin.common.decrypt.SHA1;
 import com.riversoft.weixin.common.exception.WxRuntimeException;
 import com.riversoft.weixin.common.message.XmlMessageHeader;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -22,6 +24,7 @@ import sun.security.rsa.RSASignature;
 @Controller
 @Slf4j
 public class InitController {
+
 
     @Value("${wx.token}")
     private String token;
@@ -41,7 +44,8 @@ public class InitController {
 //        SHA1
         try {
             if (!StringUtils.isEmpty(echostr)) {
-                if (!SHA1.getSHA1(new String[]{this.token, timestamp, nonce, echostr}).equals(signature)) {
+                if (!SHA1.getSHA1(new String[]{this.token, timestamp, nonce}).equals(signature)) {
+                    log.info("消息签名验证失败.");
                     return "";
                 } else {
                     log.info("消息签名验证成功.");
