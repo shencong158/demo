@@ -1,11 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.common.base.CorpSetting;
-import com.example.demo.common.message.QyXmlMessages;
-import com.riversoft.weixin.common.decrypt.AesException;
-import com.riversoft.weixin.common.decrypt.MessageDecryption;
 import com.riversoft.weixin.common.decrypt.SHA1;
-import com.riversoft.weixin.common.exception.WxRuntimeException;
 import com.riversoft.weixin.common.message.XmlMessageHeader;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RedissonClient;
@@ -13,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import sun.security.rsa.RSASignature;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author: cong.shen
@@ -25,6 +22,9 @@ import sun.security.rsa.RSASignature;
 @Slf4j
 public class InitController {
 
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Value("${wx.token}")
     private String token;
